@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="paging">
+      <UniqueIdentifier>{ca16b2ee-8797-48d2-abe6-d411d5670c1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="paging\header">
+      <UniqueIdentifier>{aaedb736-cbd0-490e-8cc2-8f9b6d758471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="paging\sources">
+      <UniqueIdentifier>{2cf713d0-f8c8-493e-bc14-0b4182664702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="gdt">
+      <UniqueIdentifier>{c5d55436-0ee4-4347-8d6e-8a59892ed15c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdt\header">
+      <UniqueIdentifier>{3b3c8bb9-199e-4507-89d0-ff3eba3c887b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdt\sources">
+      <UniqueIdentifier>{38f4eb8a-0e15-40a9-b903-3620f7b78fe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interrupts">
+      <UniqueIdentifier>{a3152e24-dae7-4a58-afd9-5b664dcb6bea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interrupts\header">
+      <UniqueIdentifier>{740ae02c-fb65-4ba0-a901-2ab2ae57902d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interrupts\sources">
+      <UniqueIdentifier>{7937d877-74ce-4625-b029-ba7b4f04e1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user_input">
+      <UniqueIdentifier>{4daea924-861f-410b-973d-d75728673a88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user_input\header">
+      <UniqueIdentifier>{c85fd52a-c84d-453f-9273-957d834523ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user_input\sources">
+      <UniqueIdentifier>{551344ad-4360-498f-8c57-15fe68249e8d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BasicRenderer.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="string.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="efiMemory.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="memory.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="paging\PageFrameAllocator.cpp">
+      <Filter>paging\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="paging\PageMapIndexer.cpp">
+      <Filter>paging\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="paging\PageTableManager.cpp">
+      <Filter>paging\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel.cpp" />
+    <ClCompile Include="paging\paging.cpp">
+      <Filter>paging\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="gdt\gdt.cpp">
+      <Filter>gdt\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="interrupts\IDT.cpp">
+      <Filter>interrupts\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="interrupts\interrupts.cpp">
+      <Filter>interrupts\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel_util.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="FaultScreen.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="user_input\KB_ScancodeTranslation.cpp">
+      <Filter>user_input\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="user_input\keyboard.cpp">
+      <Filter>user_input\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BasicRenderer.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicFont.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="string.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="efiMemory.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="memory.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="dynamic.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="paging\PageFrameAllocator.h">
+      <Filter>paging\header</Filter>
+    </ClInclude>
+    <ClInclude Include="paging\paging.h">
+      <Filter>paging\header</Filter>
+    </ClInclude>
+    <ClInclude Include="paging\PageMapIndexer.h">
+      <Filter>paging\header</Filter>
+    </ClInclude>
+    <ClInclude Include="paging\PageTableManager.h">
+      <Filter>paging\header</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel_util.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="gdt\gdt.h">
+      <Filter>gdt\header</Filter>
+    </ClInclude>
+    <ClInclude Include="interrupts\IDT.h">
+      <Filter>interrupts\header</Filter>
+    </ClInclude>
+    <ClInclude Include="interrupts\interrupts.h">
+      <Filter>interrupts\header</Filter>
+    </ClInclude>
+    <ClInclude Include="FaultScreen.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="user_input\KB_ScancodeTranslation.h">
+      <Filter>user_input\header</Filter>
+    </ClInclude>
+    <ClInclude Include="user_input\keyboard.h">
+      <Filter>user_input\header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gdt\gdt.asm">
+      <Filter>gdt\sources</Filter>
+    </None>
+  </ItemGroup>
+</Project>
