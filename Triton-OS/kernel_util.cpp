@@ -71,12 +71,12 @@ void PrepareInterrupts() {
 
 	#pragma region Keyboard
 	RemapPIC();
+
 	outb(PIC1_DATA, 0b11111101);
 	outb(PIC2_DATA, 0b11111111);
 
 	asm("sti");
 	#pragma endregion
-
 }
 
 BasicRenderer r = BasicRenderer(NULL, NULL);

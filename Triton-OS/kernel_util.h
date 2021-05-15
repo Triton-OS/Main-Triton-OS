@@ -27,7 +27,7 @@ struct KernelInfo {
     PageTableManager* pageTableManager;
 };
 
-KernelInfo InitializeKernel(BootInfo* bootInfo);
-
 extern uint64_t _KernelStart;
 extern uint64_t _KernelEnd;
+
+KernelInfo InitializeKernel(BootInfo* bootInfo);

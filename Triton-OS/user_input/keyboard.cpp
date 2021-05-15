@@ -1,9 +1,38 @@
 #include "keyboard.h"
 
+bool isLeftShiftPressed;
+bool isRightShiftPressed;
+
 void HandleKeyboard(uint8_t scancode) {
+    
+    switch (scancode) {
+    case LeftShift:
+        isLeftShiftPressed = true;
+        return;
+    case LeftShift + 0x80:
+        isLeftShiftPressed = false;
+        return;
+    case RightShift:
+        isRightShiftPressed = true;
+        return;
+    case RightShift + 0x80:
+        isRightShiftPressed = false;
+        return;
+    case Enter:
+        GlobalRenderer->PutChar('\n');
+        return;
+    case Spacebar:
+        GlobalRenderer->PutChar(' ');
+        return;
+    case BackSpace:
+        //GlobalRenderer->ClearLastChar();
+        return;
+    }
 
-	char ascii = QWERTZKeyboard::Translate(scancode, false);
-	if (ascii != 0) GlobalRenderer->Print(ascii);
+    char ascii = QWERTZKeyboard::Translate(scancode, isLeftShiftPressed | isRightShiftPressed);
 
-	return;
+    if (ascii != 0) GlobalRenderer->PutChar(ascii);
+
+    return;
+    
 }
