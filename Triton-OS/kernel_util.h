@@ -6,6 +6,7 @@
 #include "efiMemory.h"
 #include "memory.h"
 #include "Bitmap.h"
+#include "IO.h"
 #include "paging/paging.h"
 #include "paging/PageMapIndexer.h"
 #include "paging/PageFrameAllocator.h"
@@ -13,7 +14,7 @@
 #include "gdt/gdt.h"
 #include "interrupts/IDT.h"
 #include "interrupts/interrupts.h"
-#include "IO.h"
+#include "user_input/mouse.h"
 
 struct BootInfo {
     Framebuffer* framebuffer;

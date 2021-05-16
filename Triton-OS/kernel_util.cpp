@@ -19,21 +19,16 @@ void PrepareMemory(BootInfo* bootInfo) {
 
 	ptm = PageTableManager(PML4);
 
-	for (uint64_t i = 0; i < GetMemorySize(bootInfo->mMap, mMapEntries, bootInfo->mMapDescriptorSize); i += 0x1000) {
-		ptm.MapMemory((void*)i, (void*)i);
-	}
+	for (uint64_t i = 0; i < GetMemorySize(bootInfo->mMap, mMapEntries, bootInfo->mMapDescriptorSize); i += 0x1000) ptm.MapMemory((void*)i, (void*)i);
 
 	uint64_t fbBase = (uint64_t)bootInfo->framebuffer->BaseAddress;
 	uint64_t fbSize = (uint64_t)bootInfo->framebuffer->BufferSize + 0x1000;
 
 	GlobalAllocator.LockPages((void*)fbBase, fbSize / 0x1000 + 1);
 
-	for (uint64_t i = fbBase; i < fbBase + fbSize; i += 4096) {
-		ptm.MapMemory((void*)i, (void*)i);
-	}
+	for (uint64_t i = fbBase; i < fbBase + fbSize; i += 4096) ptm.MapMemory((void*)i, (void*)i);
 
-	for (uint64_t i = fbBase; i < fbBase + fbSize; i += 4096)
-		ptm.MapMemory((void*)i, (void*)i);
+	for (uint64_t i = fbBase; i < fbBase + fbSize; i += 4096) ptm.MapMemory((void*)i, (void*)i);
 
 	asm("mov %0, %%cr3" : : "r" (PML4));
 
@@ -41,42 +36,29 @@ void PrepareMemory(BootInfo* bootInfo) {
 }
 
 IDTR idtr;
+
+void SetIDTGate(void* handler, uint8_t entryOffset, uint8_t type_attr, uint8_t selector) {
+	IDTDescrEntry* interrupt = (IDTDescrEntry*)(idtr.offset + entryOffset * sizeof(IDTDescrEntry));
+	interrupt->SetOffset((uint64_t)handler);
+	interrupt->type_attr = type_attr;
+	interrupt->selector = selector;
+
+	return;
+}
+
 void PrepareInterrupts() {
 	idtr.limit = 0x0FFF;
 	idtr.offset = (uint64_t)GlobalAllocator.RequestPage();
 
-	#pragma region Handler
-	IDTDescrEntry* int_PageFault = (IDTDescrEntry*)(idtr.offset + 0xE * sizeof(IDTDescrEntry));
-	int_PageFault->SetOffset((uint64_t)PageFault_Handler);
-	int_PageFault->type_attr = IDT_TA_InterruptGate;
-	int_PageFault->selector = 0x08;
-
-	IDTDescrEntry* int_DoubleFault = (IDTDescrEntry*)(idtr.offset + 0x8 * sizeof(IDTDescrEntry));
-	int_DoubleFault->SetOffset((uint64_t)DoubleFault_Handler);
-	int_DoubleFault->type_attr = IDT_TA_InterruptGate;
-	int_DoubleFault->selector = 0x08;
-
-	IDTDescrEntry* int_GPFault = (IDTDescrEntry*)(idtr.offset + 0xD * sizeof(IDTDescrEntry));
-	int_GPFault->SetOffset((uint64_t)GPFault_Handler);
-	int_GPFault->type_attr = IDT_TA_InterruptGate;
-	int_GPFault->selector = 0x08;
-
-	IDTDescrEntry* int_Keyboard = (IDTDescrEntry*)(idtr.offset + 0x21 * sizeof(IDTDescrEntry));
-	int_Keyboard->SetOffset((uint64_t)KeyboarInt_Handler);
-	int_Keyboard->type_attr = IDT_TA_InterruptGate;
-	int_Keyboard->selector = 0x08;
-	#pragma endregion
+	SetIDTGate((void*)PageFault_Handler, 0x0E, IDT_TA_InterruptGate, 0x08);
+	SetIDTGate((void*)DoubleFault_Handler, 0x08, IDT_TA_InterruptGate, 0x08);
+	SetIDTGate((void*)GPFault_Handler, 0x0D, IDT_TA_InterruptGate, 0x08);
+	SetIDTGate((void*)KeyboardInt_Handler, 0x21, IDT_TA_InterruptGate, 0x08);
+	SetIDTGate((void*)MouseInt_Handler, 0x2C, IDT_TA_InterruptGate, 0x08);
 
 	asm ("lidt %0" : : "m" (idtr));
 
-	#pragma region Keyboard
 	RemapPIC();
-
-	outb(PIC1_DATA, 0b11111101);
-	outb(PIC2_DATA, 0b11111111);
-
-	asm("sti");
-	#pragma endregion
 }
 
 BasicRenderer r = BasicRenderer(NULL, NULL);
@@ -91,8 +73,17 @@ KernelInfo InitializeKernel(BootInfo* bootInfo) {
 	LoadGDT(&gdtDescriptor);
 	
 	PrepareMemory(bootInfo);
+	
 	memset(bootInfo->framebuffer->BaseAddress, 0, bootInfo->framebuffer->BufferSize);	// Clear Screen
+	
 	PrepareInterrupts();
+
+	PS2InitMouse();
+
+	outb(PIC1_DATA, 0b11111001);
+	outb(PIC2_DATA, 0b11101111);
+
+	asm("sti");
 	
 	return kernelInfo;
 }

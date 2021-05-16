@@ -1,24 +1,30 @@
 #include "interrupts.h"
 
-__attribute__((interrupt)) void PageFault_Handler(struct interrupt_frame* frame) {
+__attribute__((interrupt)) void PageFault_Handler(interrupt_frame* frame) {
 	ShowFaultMessage("Page Fault", "Es wird auf eine ungueltige Speicheradresse verwiesen!", 0x01);
 	asm("hlt");
 }
 
-__attribute__((interrupt)) void DoubleFault_Handler(struct interrupt_frame* frame) {
+__attribute__((interrupt)) void DoubleFault_Handler(interrupt_frame* frame) {
 	ShowFaultMessage("Double Fault", "", 0x02);
 	asm("hlt");
 }
 
-__attribute__((interrupt)) void GPFault_Handler(struct interrupt_frame* frame) {
+__attribute__((interrupt)) void GPFault_Handler(interrupt_frame* frame) {
 	ShowFaultMessage("General Protection Fault", "", 0x03);
 	asm("hlt");
 }
 
-__attribute__((interrupt)) void KeyboarInt_Handler(struct interrupt_frame* frame) {
+__attribute__((interrupt)) void KeyboardInt_Handler(interrupt_frame* frame) {
 	uint8_t scancode = inb(0x60);
 	HandleKeyboard(scancode);
 	PIC_EndMaster();
+}
+
+__attribute__((interrupt)) void MouseInt_Handler(interrupt_frame* frame) {
+	uint8_t mouseData  = inb(0x60);
+	HandlePS2Mouse(mouseData);
+	PIC_EndSlave();
 }
 
 void RemapPIC() {

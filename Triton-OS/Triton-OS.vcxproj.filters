@@ -103,6 +103,9 @@
     <ClCompile Include="user_input\keyboard.cpp">
       <Filter>user_input\sources</Filter>
     </ClCompile>
+    <ClCompile Include="user_input\mouse.cpp">
+      <Filter>user_input\sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRenderer.h">
@@ -166,6 +169,9 @@
       <Filter>user_input\header</Filter>
     </ClInclude>
     <ClInclude Include="user_input\keyboard.h">
+      <Filter>user_input\header</Filter>
+    </ClInclude>
+    <ClInclude Include="user_input\mouse.h">
       <Filter>user_input\header</Filter>
     </ClInclude>
   </ItemGroup>

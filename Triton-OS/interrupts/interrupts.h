@@ -3,6 +3,7 @@
 #include "../BasicRenderer.h"
 #include "../IO.h"
 #include "../user_input/keyboard.h"
+#include "../user_input/mouse.h"
 
 #define PIC1_COMMAND 0x20
 #define PIC1_DATA 0x21
@@ -16,10 +17,11 @@
 
 
 struct interrupt_frame;
-__attribute__((interrupt)) void PageFault_Handler(struct interrupt_frame* frame);
-__attribute__((interrupt)) void DoubleFault_Handler(struct interrupt_frame* frame);
-__attribute__((interrupt)) void GPFault_Handler(struct interrupt_frame* frame);
-__attribute__((interrupt)) void KeyboarInt_Handler(struct interrupt_frame* frame);
+__attribute__((interrupt)) void PageFault_Handler(interrupt_frame* frame);
+__attribute__((interrupt)) void DoubleFault_Handler(interrupt_frame* frame);
+__attribute__((interrupt)) void GPFault_Handler(interrupt_frame* frame);
+__attribute__((interrupt)) void KeyboardInt_Handler(interrupt_frame* frame);
+__attribute__((interrupt)) void MouseInt_Handler(interrupt_frame* frame);
 
 
 void RemapPIC();

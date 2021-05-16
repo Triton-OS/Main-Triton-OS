@@ -37,6 +37,7 @@
     <ClCompile Include="string.cpp" />
     <ClCompile Include="user_input\KB_ScancodeTranslation.cpp" />
     <ClCompile Include="user_input\keyboard.cpp" />
+    <ClCompile Include="user_input\mouse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicFont.h" />
@@ -60,6 +61,7 @@
     <ClInclude Include="string.h" />
     <ClInclude Include="user_input\KB_ScancodeTranslation.h" />
     <ClInclude Include="user_input\keyboard.h" />
+    <ClInclude Include="user_input\mouse.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="gdt\gdt.asm" />

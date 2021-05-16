@@ -19,13 +19,13 @@ void HandleKeyboard(uint8_t scancode) {
         isRightShiftPressed = false;
         return;
     case Enter:
-        GlobalRenderer->PutChar('\n');
+        GlobalRenderer->Print("\n\r");
         return;
     case Spacebar:
         GlobalRenderer->PutChar(' ');
         return;
     case BackSpace:
-        //GlobalRenderer->ClearLastChar();
+        GlobalRenderer->ClearLastChar();
         return;
     }
 
