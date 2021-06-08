@@ -1,11 +1,11 @@
 #pragma once
 #include "../IO.h"
-#include "../Math.h"
+#include "../Point.h"
 #include "../BasicRenderer.h"
 
 #define PS2LeftButton 0b00000001
-#define PS2MiddleButton 0b00000010
-#define PS2RigthButton 0b00000100
+#define PS2MiddleButton 0b00000100
+#define PS2RigthButton 0b00000010
 
 #define PS2XSign 0b00010000
 #define PS2XOverflow 0b01000000

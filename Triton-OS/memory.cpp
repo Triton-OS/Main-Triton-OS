@@ -17,3 +17,12 @@ void memset(void* start, uint8_t value, uint64_t num) {
 	for (uint64_t i = 0; i < num; i++)
 		*(uint8_t*)((uint64_t)start + i) = value;	
 }
+
+void* memcpy(void* dest, const void* src, uint64_t count) {
+	int8_t* isrc = (int8_t*)src;
+	int8_t* idest = (int8_t*)dest;
+
+	for (uint64_t i = 0; i < count; i++) idest[i] = isrc[i];
+
+	return dest;
+}

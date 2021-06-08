@@ -106,6 +106,12 @@
     <ClCompile Include="user_input\mouse.cpp">
       <Filter>user_input\sources</Filter>
     </ClCompile>
+    <ClCompile Include="Draw.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRenderer.h">
@@ -173,6 +179,12 @@
     </ClInclude>
     <ClInclude Include="user_input\mouse.h">
       <Filter>user_input\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

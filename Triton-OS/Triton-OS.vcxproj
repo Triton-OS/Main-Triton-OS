@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="BasicRenderer.cpp" />
     <ClCompile Include="Bitmap.cpp" />
+    <ClCompile Include="Draw.cpp" />
     <ClCompile Include="efiMemory.cpp" />
     <ClCompile Include="FaultScreen.cpp" />
     <ClCompile Include="gdt\gdt.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="kernel.cpp" />
     <ClCompile Include="kernel_util.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="memory.cpp" />
     <ClCompile Include="paging\PageFrameAllocator.cpp" />
     <ClCompile Include="paging\PageMapIndexer.cpp" />
@@ -43,6 +45,7 @@
     <ClInclude Include="BasicFont.h" />
     <ClInclude Include="BasicRenderer.h" />
     <ClInclude Include="Bitmap.h" />
+    <ClInclude Include="Draw.h" />
     <ClInclude Include="dynamic.h" />
     <ClInclude Include="efiMemory.h" />
     <ClInclude Include="FaultScreen.h" />
@@ -58,6 +61,7 @@
     <ClInclude Include="paging\PageMapIndexer.h" />
     <ClInclude Include="paging\PageTableManager.h" />
     <ClInclude Include="paging\paging.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="user_input\KB_ScancodeTranslation.h" />
     <ClInclude Include="user_input\keyboard.h" />

@@ -16,17 +16,17 @@ void BasicRenderer::SetColor(uint32_t color) {
 }
 
 void BasicRenderer::PutPixel(Point pos) {
-	this->PutPixel(pos.X, pos.Y, this->color);
+	*(uint32_t*)((uint64_t)this->TargetFramebuffer->BaseAddress + (pos.X * 4) + (pos.Y * this->TargetFramebuffer->PixelsPerScanLine * 4)) = this->color;
 	return;
 }
 
 void BasicRenderer::PutPixel(uint32_t x, uint32_t y) {
-	this->PutPixel(x, y, this->color);
+	*(uint32_t*)((uint64_t)this->TargetFramebuffer->BaseAddress + (x * 4) + (y * this->TargetFramebuffer->PixelsPerScanLine * 4)) = this->color;
 	return;
 }
 
 void BasicRenderer::PutPixel(Point pos, uint32_t color) {
-	this->PutPixel(pos.X, pos.Y, color);
+	*(uint32_t*)((uint64_t)this->TargetFramebuffer->BaseAddress + (pos.X * 4) + (pos.Y * this->TargetFramebuffer->PixelsPerScanLine * 4)) = color;
 	return;
 }
 
@@ -36,7 +36,7 @@ void BasicRenderer::PutPixel(uint32_t x, uint32_t y, uint32_t color) {
 }
 
 uint32_t BasicRenderer::GetPixel(Point pos) {
-	return this->GetPixel(pos.X, pos.Y);
+	return *(uint32_t*)((uint64_t)this->TargetFramebuffer->BaseAddress + (pos.X * 4) + (pos.Y * this->TargetFramebuffer->PixelsPerScanLine * 4));
 }
 
 uint32_t BasicRenderer::GetPixel(uint32_t x, uint32_t y) {
@@ -49,43 +49,52 @@ void BasicRenderer::DrawOverlayMouseCursor(uint8_t* mouseCursor, Point pos) {
 }
 
 void BasicRenderer::DrawOverlayMouseCursor(uint8_t* mouseCursor, Point pos, uint32_t color) {
+
 	uint8_t xMax = 16;
-	uint8_t yMax = 21;
+	uint8_t yMax = 0x15;
 	int differenceX = this->TargetFramebuffer->Width - pos.X;
 	int differenceY = this->TargetFramebuffer->Heigth - pos.Y;
 
 	if (differenceX < 16) xMax = differenceX;
-	if (differenceY < 21) yMax = differenceY;
+	if (differenceY < 0x15) yMax = differenceY;
 
 	for (int y = 0; y < yMax; y++) {
 		for (int x = 0; x < xMax; x++) {
 			int bit = y * 16 + x;
 			int byte = bit / 8;
 			if (mouseCursor[byte] & (0b10000000 >> (x % 8))) {
-				MouseCursorBuffer[x + y * 16] = this->GetPixel(pos.X + x, pos.Y + y);
-				this->PutPixel(pos.X + x, pos.Y + y, color);
+				this->MouseCursorBuffer[x + y * 16] = this->GetPixel(pos.X + x, pos.Y + y);
+				*(uint32_t*)((uint64_t)this->TargetFramebuffer->BaseAddress + ((pos.X + x) * 4) + ((pos.Y + y) * this->TargetFramebuffer->PixelsPerScanLine * 4)) = color;
+				this->MouseCursorBuffer_ADraw[x + y * 16] = this->GetPixel(pos.X + x, pos.Y + y);
 			}
 		}
 	}
+
+	this->is_mouse_drawn = true;
 
 	return;
 }
 
 void BasicRenderer::ClearMouseCursor(uint8_t* mouseCursor, Point pos) {
+
+	if (!this->is_mouse_drawn) return;
+
 	uint8_t xMax = 16;
-	uint8_t yMax = 21;
+	uint8_t yMax = 0x15;
 	int differenceX = this->TargetFramebuffer->Width - pos.X;
 	int differenceY = this->TargetFramebuffer->Heigth - pos.Y;
 
 	if (differenceX < 16) xMax = differenceX;
-	if (differenceY < 21) yMax = differenceY;
+	if (differenceY < 0x15) yMax = differenceY;
 
 	for (int y = 0; y < yMax; y++) {
 		for (int x = 0; x < xMax; x++) {
 			int bit = y * 16 + x;
 			int byte = bit / 8;
 			if (mouseCursor[byte] & (0b10000000 >> (x % 8))) {
-				this->PutPixel(pos.X + x, pos.Y + y, MouseCursorBuffer[x + y * 16]);
+				if (this->GetPixel(pos.X + x, pos.Y + y) == this->MouseCursorBuffer_ADraw[x + y * 16]) {
+					this->PutPixel(pos.X + x, pos.Y + y, MouseCursorBuffer[x + y * 16]);
+				}
 			}
 		}
 	}
@@ -94,7 +103,7 @@ void BasicRenderer::ClearMouseCursor(uint8_t* mouseCursor, Point pos) {
 }
 
 void BasicRenderer::Print(char chr) {
-		PutChar(chr, this->color);
+	PutChar(chr, this->color);
 }
 
 void BasicRenderer::Print(const char* str) {
@@ -119,10 +128,10 @@ void BasicRenderer::PutChar(char c) {
 }
 
 void BasicRenderer::PutChar(char c, uint32_t color) {
-	if (c == '\r') this->CursorPosition.X = 0; 
+	if (c == '\r') this->CursorPosition.X = 0;
 	else if (c == '\n') {
 		if (this->CursorPosition.Y + STD_BASIC_RENDERER_GLYPH_HIGTH < this->TargetFramebuffer->Heigth)
-			this->CursorPosition.Y += STD_BASIC_RENDERER_GLYPH_HIGTH; 
+			this->CursorPosition.Y += STD_BASIC_RENDERER_GLYPH_HIGTH;
 	}
 	else {
 		if (this->CursorPosition.X + STD_BASIC_RENDERER_GLYPH_WIDTH >= this->TargetFramebuffer->Width) {
@@ -140,11 +149,11 @@ void BasicRenderer::PutChar(char c, uint32_t xOff, uint32_t yOff, uint32_t color
 
 	unsigned int* pixPtr = (unsigned int*)this->TargetFramebuffer->BaseAddress;
 	char* fontPtr = (char*)this->psf1_font->glyphBuffer + (c * this->psf1_font->psf1_header->charsize);
-	
+
 	for (unsigned long y = yOff; y < yOff + STD_BASIC_RENDERER_GLYPH_HIGTH; y++) {
 		for (unsigned long x = xOff; x < xOff + STD_BASIC_RENDERER_GLYPH_WIDTH; x++) {
 			if ((*fontPtr & (0b10000000 >> (x - xOff))) > 0) {
-				*(unsigned int*)(pixPtr + x + (y * this->TargetFramebuffer->PixelsPerScanLine)) = color;
+				*(uint32_t*)(pixPtr + x + (y * this->TargetFramebuffer->PixelsPerScanLine)) = color;
 			}
 		}
 		fontPtr++;
@@ -166,7 +175,7 @@ void BasicRenderer::ClearLastChar() {
 
 void BasicRenderer::ClearLastChar(uint32_t clear_color) {
 
-	if(this->CursorPosition.X == 0) {
+	if (this->CursorPosition.X == 0) {
 		CursorPosition.X = this->TargetFramebuffer->Width;
 		CursorPosition.Y -= STD_BASIC_RENDERER_GLYPH_HIGTH;
 		if (this->CursorPosition.Y < 0) CursorPosition.Y = 0;
@@ -174,7 +183,7 @@ void BasicRenderer::ClearLastChar(uint32_t clear_color) {
 
 	for (unsigned long y = this->CursorPosition.Y; y < this->CursorPosition.Y + STD_BASIC_RENDERER_GLYPH_HIGTH; y++) {
 		for (unsigned long x = this->CursorPosition.X - STD_BASIC_RENDERER_GLYPH_WIDTH; x < this->CursorPosition.X; x++)
-			*(unsigned int*)((unsigned int*)this->TargetFramebuffer->BaseAddress + x + (y * this->TargetFramebuffer->PixelsPerScanLine)) = clear_color;
+			*(uint32_t*)((uint32_t*)this->TargetFramebuffer->BaseAddress + x + (y * this->TargetFramebuffer->PixelsPerScanLine)) = clear_color;
 	}
 
 	this->CursorPosition.X -= STD_BASIC_RENDERER_GLYPH_WIDTH;

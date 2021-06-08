@@ -1,9 +1,11 @@
 #include "string.h"
+#include "memory.h"
 
 char Buffer[128];
 
 void ClearBuffer() {
 	for (int i = 0; i < 128; i++) Buffer[i] = '\0';
+	//memset(&Buffer, '\0', 128);
 }
 
 const char* to_string(uint64_t value) {

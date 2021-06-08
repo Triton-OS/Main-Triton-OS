@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math.h"
+#include "Point.h"
 #include "Framebuffer.h"
 #include "BasicFont.h"
 #include <stdint.h>
@@ -11,13 +11,16 @@
 
 class BasicRenderer
 {
+private:
+	bool is_mouse_drawn;
+	uint32_t MouseCursorBuffer[16 * 0x15];
+	uint32_t MouseCursorBuffer_ADraw[16 * 0x15];
 
 public:
 
 	Framebuffer* TargetFramebuffer;
 	PSF1_FONT* psf1_font;
 	uint32_t color, back_color;
-	uint32_t MouseCursorBuffer[16 * 16];
 
 	BasicRenderer(Framebuffer* TargetFramebuffer, PSF1_FONT* psf1_font, uint32_t color = 0xffffffff, uint32_t back_color = 0x00000000);
 
@@ -51,8 +54,6 @@ public:
 
 	void Clear();
 	void Clear(uint32_t color = 0x00000000);
-
-
 
 	Point CursorPosition = { 0, 0 };
 
